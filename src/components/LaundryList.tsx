@@ -38,10 +38,10 @@ export function LaundryList({
   return (
     <div className="container mx-auto px-4 pb-20">
       {/* Controls */}
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-5">
         <button
           onClick={onToggleSort}
-          className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
+          className="flex items-center space-x-2 bg-white/80 backdrop-blur-lg py-3 px-5 rounded-[1.25rem] active:scale-95 transition-all duration-200 font-medium"
         >
           <AlignLeft size={20} />
           <span>Sort: {getSortText()}</span>
@@ -49,7 +49,7 @@ export function LaundryList({
         
         <button
           onClick={onRefresh}
-          className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
+          className="flex items-center space-x-2 bg-white/80 backdrop-blur-lg py-3 px-5 rounded-[1.25rem] active:scale-95 transition-all duration-200 font-medium"
         >
           <RefreshCw size={20} />
           <span>Update</span>
@@ -63,7 +63,7 @@ export function LaundryList({
       />
 
       {/* Secondary Hall Cards */}
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-2 gap-4 mt-5">
         {compactHalls.map(hall => (
           <CompactCard
             key={hall.id}

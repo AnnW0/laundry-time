@@ -12,13 +12,12 @@ export function useTime() {
       setCurrentTime(now);
       
       const hours = now.getHours();
-      const minutes = now.getMinutes();
       
       // Check if it's curfew (10 PM - 7 AM)
       setIsCurfew(hours >= 22 || hours < 7);
       
-      // Check if it's approaching curfew (within 1 hour)
-      setIsApproachingCurfew(hours === 21 && minutes >= 0);
+      // Check if it's approaching curfew (after 6 PM until 10 PM)
+      setIsApproachingCurfew(hours >= 18 && hours < 22);
     }, 1000);
 
     return () => clearInterval(interval);

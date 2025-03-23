@@ -7,10 +7,10 @@ export function Header() {
   const { timeDisplay, isCurfew, isApproachingCurfew } = useTime();
 
   return (
-    <div className="relative flex flex-col items-center justify-center pt-10 pb-4">
+    <div className="relative flex flex-col items-center justify-center pt-10 pb-6">
       <div className={cn(
         "absolute top-10 left-10 transition-all duration-500",
-        isCurfew ? "moon-gradient text-white" : "text-primary opacity-70"
+        (isCurfew || isApproachingCurfew) ? "moon-gradient" : "text-primary opacity-70"
       )}>
         <Moon 
           className={cn(
@@ -23,18 +23,18 @@ export function Header() {
         />
       </div>
       
-      <h1 className="text-6xl font-yeseva text-white drop-shadow-sm tracking-wider">
+      <h1 className="text-7xl font-bold text-black/90 tracking-wider no-shadows">
         {timeDisplay}
       </h1>
       
       {isCurfew && (
-        <div className="mt-2 text-sm text-white/80 animate-fade-in">
+        <div className="mt-2 text-sm text-black/80 animate-fade-in">
           Quiet hours in effect
         </div>
       )}
       
       {isApproachingCurfew && !isCurfew && (
-        <div className="mt-2 text-sm text-white/80 animate-fade-in">
+        <div className="mt-2 text-sm text-black/80 animate-fade-in">
           Quiet hours starting soon
         </div>
       )}

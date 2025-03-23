@@ -1,3 +1,4 @@
+
 import { mockHalls } from "@/lib/data";
 import { Hall, Machine, SortOption } from "@/types";
 import { useToast } from "@/hooks/use-toast";
@@ -69,13 +70,13 @@ export function useMachines() {
           toast({
             title: "Notifications enabled",
             description: "You'll be notified when machines become available",
-            duration: 3000,
+            duration: 2000,
           });
         } else {
           toast({
             title: "Notifications not enabled",
             description: "You won't receive alerts when machines become available",
-            duration: 3000,
+            duration: 2000,
           });
         }
       } catch (error) {
@@ -132,12 +133,22 @@ export function useMachines() {
         currentMachine.status = "done";
         currentMachine.timeRemaining = 15;
         currentMachine.timeRemainingSeconds = 15 * 60;
-      } else if (currentMachine.status === "done" && currentMachine.timeRemainingSeconds && currentMachine.timeRemainingSeconds <= 0) {
-        currentMachine.status = "available";
-        currentMachine.timeRemaining = undefined;
-        currentMachine.timeRemainingSeconds = undefined;
+      } else if (currentMachine.status === "done" && currentMachine.timeRemainingSeconds) {
+        if (currentMachine.timeRemainingSeconds <= 0) {
+          // Transition to available immediately when countdown is complete
+          currentMachine.status = "available";
+          currentMachine.timeRemaining = undefined;
+          currentMachine.timeRemainingSeconds = undefined;
+        }
       } else if (currentMachine.status === "available") {
-        currentMachine.status = "running";
+        // Randomly choose between running and offline
+        if (Math.random() > 0.2) {
+          currentMachine.status = "running";
+        } else {
+          currentMachine.status = "offline";
+        }
+      } else if (currentMachine.status === "offline") {
+        currentMachine.status = "available";
       }
       
       return newHalls;

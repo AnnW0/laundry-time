@@ -57,14 +57,14 @@ export default {
         laundry: {
           available: "#8AE68A", // Green
           soon: "#FFB347", // Orange
-          running: "#FF719A", // Pink (updated from purple)
+          running: "#FF719A", // Pink
           blue: {
             light: "#A7D8FD",
             DEFAULT: "#66B9FA",
             dark: "#3A99EB",
           },
         },
-        lilac: "#C8A2C8", // Added lilac color for hall number
+        lilac: "#C8A2C8", // Lilac color for hall number
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -85,8 +85,8 @@ export default {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "fade-out": {
-          "0%": { opacity: "0", transform: "translateY(5px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(-5px)" },
         },
         progress: {
           "0%": { width: "0%" },

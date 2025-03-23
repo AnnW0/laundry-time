@@ -1,7 +1,7 @@
 
 import { Hall, Machine } from "@/types";
 import { cn } from "@/lib/utils";
-import { Star } from "lucide-react";
+import { Star, Wind, Waves } from "lucide-react";
 import { ProgressBar } from "./ProgressBar";
 
 interface MachineStatusProps {
@@ -17,6 +17,8 @@ function MachineStatus({ machine }: MachineStatusProps) {
         return "text-laundry-soon";
       case "running":
         return "text-laundry-running";
+      case "offline":
+        return "text-gray-400";
       default:
         return "text-gray-500";
     }
@@ -30,6 +32,8 @@ function MachineStatus({ machine }: MachineStatusProps) {
         return <span className="status-dot bg-laundry-soon"></span>;
       case "running":
         return <span className="status-dot bg-laundry-running"></span>;
+      case "offline":
+        return <span className="status-dot bg-gray-400"></span>;
       default:
         return <span className="status-dot bg-gray-300"></span>;
     }
@@ -42,9 +46,11 @@ function MachineStatus({ machine }: MachineStatusProps) {
       case "done":
         return machine.timeRemaining 
           ? `Available in ${machine.timeRemaining} min` 
-          : "Done & Occupied";
+          : "Available";
       case "running":
         return "Running";
+      case "offline":
+        return "Offline";
       default:
         return "Unknown";
     }
@@ -66,8 +72,8 @@ function formatHallName(name: string) {
   if (match) {
     return (
       <>
-        <span className="hall-letter">{match[1]}</span>
-        <span className="hall-number">{match[2]}</span>
+        <span className="text-black">{match[1]}-</span>
+        <span className="text-lilac">{match[2]}</span>
       </>
     );
   }
@@ -86,8 +92,8 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
 
   return (
     <div className="main-card w-full">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl text-gray-800">Hall {formatHallName(hall.name)}</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-black">Hall {formatHallName(hall.name)}</h2>
         <button 
           onClick={() => onToggleStar(hall.id)}
           className="focus:outline-none transition-transform active:scale-90 duration-200"
@@ -104,11 +110,18 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
         </button>
       </div>
       
-      <div className="space-y-6">
+      <div className="space-y-8">
         {machines.map(machine => (
-          <div key={machine.id} className="space-y-2">
+          <div key={machine.id} className="space-y-3">
             <div className="flex justify-between items-center">
-              <h3 className="text-xl text-gray-700">{machine.type === "washer" ? "Washer" : "Dryer"}</h3>
+              <div className="flex items-center">
+                {machine.type === "washer" ? (
+                  <Waves size={20} className="mr-2 text-laundry-blue" />
+                ) : (
+                  <Wind size={20} className="mr-2 text-laundry-blue" />
+                )}
+                <h3 className="text-xl font-semibold text-black">{machine.type === "washer" ? "Washer" : "Dryer"}</h3>
+              </div>
               <MachineStatus machine={machine} />
             </div>
             
@@ -139,8 +152,8 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
 
   return (
     <div className="machine-card w-full" onClick={onSelect}>
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="text-xl text-gray-800">Hall {formatHallName(hall.name)}</h3>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold text-black">Hall {formatHallName(hall.name)}</h3>
         <button 
           onClick={(e) => {
             e.stopPropagation();
@@ -160,10 +173,13 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
         </button>
       </div>
       
-      <div className="flex flex-col space-y-3">
+      <div className="flex flex-col space-y-4">
         {/* Washers */}
         <div className="flex justify-between items-center">
-          <span className="text-lg text-gray-700">W</span>
+          <div className="flex items-center">
+            <Waves size={16} className="mr-2 text-laundry-blue" />
+            <span className="text-lg font-medium text-black">W</span>
+          </div>
           <div className="flex items-center">
             {washers.map(machine => (
               <div key={machine.id} className="ml-2">
@@ -180,6 +196,10 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
                 {machine.status === "running" && (
                   <span className="status-dot bg-laundry-running"></span>
                 )}
+                
+                {machine.status === "offline" && (
+                  <span className="status-dot bg-gray-400"></span>
+                )}
               </div>
             ))}
           </div>
@@ -187,7 +207,10 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
         
         {/* Dryers */}
         <div className="flex justify-between items-center">
-          <span className="text-lg text-gray-700">D</span>
+          <div className="flex items-center">
+            <Wind size={16} className="mr-2 text-laundry-blue" />
+            <span className="text-lg font-medium text-black">D</span>
+          </div>
           <div className="flex items-center">
             {dryers.map(machine => (
               <div key={machine.id} className="ml-2">
@@ -203,6 +226,10 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
                 
                 {machine.status === "running" && (
                   <span className="status-dot bg-laundry-running"></span>
+                )}
+                
+                {machine.status === "offline" && (
+                  <span className="status-dot bg-gray-400"></span>
                 )}
               </div>
             ))}

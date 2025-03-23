@@ -35,6 +35,36 @@
 
     --radius: 1.5rem;
   }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
 }
 
 @layer base {
@@ -44,10 +74,10 @@
 
   body {
     @apply text-foreground min-h-screen overflow-x-hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "SF Pro", "SF Pro Text", "Helvetica Neue", sans-serif;
     background-size: 400% 400%;
-    background: linear-gradient(-45deg, #B5D5FF, #D9EAFF, #D2E6FF, #E6F0FF);
-    animation: gradient 15s ease infinite;
+    background: linear-gradient(-45deg, #D9EAFF, #E6F0FF, #D8E9FF, #E8F2FF, #F1F7FF, #E2EDFF);
+    animation: gradient 25s ease infinite;
   }
 
   html {
@@ -72,40 +102,46 @@
     @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
 
-  .card-shadow {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  }
-
   .status-dot {
     @apply w-4 h-4 rounded-full inline-block mx-1;
   }
 
   .status-text {
-    @apply font-medium text-sm;
+    @apply font-semibold text-sm;
   }
 
   .machine-card {
-    @apply bg-white/70 backdrop-blur-sm rounded-3xl p-4 transition-all duration-300 ease-out animate-fade-in;
+    @apply bg-white/85 backdrop-blur-lg rounded-[1.75rem] p-6 transition-all duration-300 ease-out animate-fade-in;
   }
 
   .machine-card-expanded {
-    @apply bg-white/70 backdrop-blur-sm rounded-3xl p-4 transition-all duration-300 ease-out;
+    @apply bg-white/85 backdrop-blur-lg rounded-[2rem] p-6 transition-all duration-300 ease-out;
   }
   
   .main-card {
-    @apply bg-white/70 backdrop-blur-sm rounded-3xl p-6 mb-4 transition-all duration-300 ease-out animate-fade-in;
+    @apply bg-white/85 backdrop-blur-lg rounded-[2.25rem] p-7 mb-5 transition-all duration-300 ease-out animate-fade-in;
   }
   
   .moon-gradient {
-    background: linear-gradient(135deg, #D580FF 0%, #FF719A 100%);
+    background: linear-gradient(135deg, #9b3cb5 0%, #FF719A 100%);
   }
   
-  .hall-letter {
-    @apply text-gray-800;
+  .toast-notification {
+    @apply bg-white/90 backdrop-blur-lg rounded-2xl p-3 border-0 shadow-none transition-all duration-300;
   }
   
-  .hall-number {
-    @apply text-lilac;
+  .no-shadows {
+    text-shadow: none;
+    box-shadow: none;
+  }
+  
+  .dark .machine-card,
+  .dark .machine-card-expanded,
+  .dark .main-card {
+    @apply bg-black/75 backdrop-blur-lg;
+  }
+  
+  .dark .toast-notification {
+    @apply bg-black/75 backdrop-blur-lg text-white;
   }
 }
-

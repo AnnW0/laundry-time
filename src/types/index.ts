@@ -1,7 +1,7 @@
 
 export type MachineType = 'washer' | 'dryer';
 
-export type MachineStatus = 'running' | 'done' | 'available';
+export type MachineStatus = 'running' | 'done' | 'available' | 'offline';
 
 export interface Machine {
   id: string;
