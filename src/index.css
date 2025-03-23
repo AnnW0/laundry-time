@@ -45,11 +45,26 @@
   }
 
   body {
-    @apply bg-gradient-to-b from-laundry-blue-light to-laundry-blue text-foreground font-yeseva min-h-screen overflow-x-hidden;
+    @apply text-foreground font-yeseva min-h-screen overflow-x-hidden;
+    background-size: 400% 400%;
+    background: linear-gradient(-45deg, #FF719A, #D580FF, #66B9FA, #33CCF1);
+    animation: gradient 15s ease infinite;
   }
 
   html {
     -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
@@ -75,18 +90,26 @@
   }
 
   .machine-card {
-    @apply bg-white rounded-2xl p-4 transition-all duration-300 ease-out card-shadow animate-fade-in;
+    @apply bg-white/70 backdrop-blur-sm rounded-2xl p-4 transition-all duration-300 ease-out animate-fade-in;
   }
 
   .machine-card-expanded {
-    @apply bg-white rounded-2xl p-4 transition-all duration-300 ease-out card-shadow;
+    @apply bg-white/70 backdrop-blur-sm rounded-2xl p-4 transition-all duration-300 ease-out;
   }
   
   .main-card {
-    @apply bg-white rounded-3xl p-6 mb-4 transition-all duration-300 ease-out card-shadow animate-fade-in;
+    @apply bg-white/70 backdrop-blur-sm rounded-3xl p-6 mb-4 transition-all duration-300 ease-out animate-fade-in;
   }
   
   .moon-gradient {
     background: linear-gradient(135deg, #D580FF 0%, #FF719A 100%);
+  }
+  
+  .hall-letter {
+    @apply text-gray-800;
+  }
+  
+  .hall-number {
+    @apply text-gray-500;
   }
 }

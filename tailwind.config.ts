@@ -95,6 +95,11 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.7" },
         },
+        gradient: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -103,6 +108,7 @@ export default {
         "fade-out": "fade-out 0.3s ease-out",
         progress: "progress linear",
         "pulse-gentle": "pulse-gentle 2s infinite ease-in-out",
+        gradient: "gradient 15s ease infinite",
       },
     },
   },

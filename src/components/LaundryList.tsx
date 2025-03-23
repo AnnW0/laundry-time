@@ -31,7 +31,7 @@ export function LaundryList({
       <div className="flex justify-between mb-4">
         <button
           onClick={onToggleSort}
-          className="flex items-center space-x-2 bg-white py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
+          className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
         >
           <AlignLeft size={20} />
           <span>Sort</span>
@@ -39,7 +39,7 @@ export function LaundryList({
         
         <button
           onClick={onRefresh}
-          className="flex items-center space-x-2 bg-white py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
+          className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
         >
           <RefreshCw size={20} />
           <span>Update</span>

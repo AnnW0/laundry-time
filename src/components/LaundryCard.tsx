@@ -2,7 +2,7 @@
 import { Hall, Machine } from "@/types";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
-import { ProgressBar, AnimatedProgressBar } from "./ProgressBar";
+import { ProgressBar } from "./ProgressBar";
 
 interface MachineStatusProps {
   machine: Machine;
@@ -44,9 +44,7 @@ function MachineStatus({ machine }: MachineStatusProps) {
           ? `Available in ${machine.timeRemaining} min` 
           : "Done & Occupied";
       case "running":
-        return machine.timeRemaining 
-          ? `${machine.timeRemaining}m remaining` 
-          : "Running";
+        return "Running";
       default:
         return "Unknown";
     }
@@ -62,6 +60,20 @@ function MachineStatus({ machine }: MachineStatusProps) {
   );
 }
 
+function formatHallName(name: string) {
+  // Extract letter and number (e.g., "Hall A1" -> { letter: "A", number: "1" })
+  const match = name.match(/Hall\s+([A-Z])(\d+)/i);
+  if (match) {
+    return (
+      <>
+        <span className="hall-letter">{match[1]}</span>
+        <span className="hall-number">{match[2]}</span>
+      </>
+    );
+  }
+  return name;
+}
+
 interface MainCardProps {
   hall: Hall;
   onToggleStar: (hallId: string) => void;
@@ -75,7 +87,7 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
   return (
     <div className="main-card w-full">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-yeseva text-gray-800">{hall.name}</h2>
+        <h2 className="text-2xl font-yeseva text-gray-800">Hall {formatHallName(hall.name)}</h2>
         <button 
           onClick={() => onToggleStar(hall.id)}
           className="focus:outline-none transition-transform active:scale-90 duration-200"
@@ -96,22 +108,15 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
         {machines.map(machine => (
           <div key={machine.id} className="space-y-2">
             <div className="flex justify-between items-center">
-              <h3 className="text-xl font-yeseva text-gray-700">{machine.name}</h3>
+              <h3 className="text-xl font-yeseva text-gray-700">{machine.type === "washer" ? "Washer" : "Dryer"}</h3>
               <MachineStatus machine={machine} />
             </div>
             
             {machine.status === "done" && machine.timeRemaining && (
-              <AnimatedProgressBar 
-                durationMinutes={machine.timeRemaining}
-                color="bg-laundry-soon"
-              />
-            )}
-            
-            {machine.status === "running" && machine.timeRemaining && (
               <ProgressBar 
-                value={35 - (machine.timeRemaining || 0)}
-                max={35}
-                color="bg-laundry-running"
+                value={15 - (machine.timeRemaining || 0)}
+                max={15}
+                color="bg-laundry-soon"
               />
             )}
           </div>
@@ -128,14 +133,14 @@ interface CompactCardProps {
 }
 
 export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) {
-  const machines = hall.machines.sort((a, b) => 
-    a.type === "washer" ? -1 : 1
-  );
+  // Group machines by type
+  const washers = hall.machines.filter(m => m.type === "washer");
+  const dryers = hall.machines.filter(m => m.type === "dryer");
 
   return (
     <div className="machine-card w-full" onClick={onSelect}>
       <div className="flex justify-between items-center mb-3">
-        <h3 className="text-xl font-yeseva text-gray-800">{hall.name}</h3>
+        <h3 className="text-xl font-yeseva text-gray-800">Hall {formatHallName(hall.name)}</h3>
         <button 
           onClick={(e) => {
             e.stopPropagation();
@@ -155,32 +160,54 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
         </button>
       </div>
       
-      <div className="grid grid-cols-2 gap-2">
-        {machines.map(machine => (
-          <div key={machine.id} className="flex justify-between items-center">
-            <span className="text-lg font-yeseva text-gray-700">{machine.name}</span>
-            
-            {machine.status === "available" && (
-              <span className="status-dot bg-laundry-available"></span>
-            )}
-            
-            {machine.status === "running" && machine.timeRemaining && (
-              <span className="text-sm text-laundry-running font-medium">
-                {machine.timeRemaining}m
-              </span>
-            )}
-            
-            {machine.status === "done" && machine.timeRemaining && (
-              <span className="text-sm text-laundry-soon font-medium">
-                {machine.timeRemaining}m
-              </span>
-            )}
-            
-            {machine.status === "running" && !machine.timeRemaining && (
-              <span className="status-dot bg-laundry-running"></span>
-            )}
+      <div className="flex flex-col space-y-1">
+        {/* Washers */}
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-yeseva text-gray-700">W</span>
+          <div className="flex items-center">
+            {washers.map(machine => (
+              <div key={machine.id} className="ml-2">
+                {machine.status === "available" && (
+                  <span className="status-dot bg-laundry-available"></span>
+                )}
+                
+                {machine.status === "done" && machine.timeRemaining && (
+                  <span className="text-sm text-laundry-soon font-medium">
+                    {machine.timeRemaining}m
+                  </span>
+                )}
+                
+                {machine.status === "running" && (
+                  <span className="status-dot bg-laundry-running"></span>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        
+        {/* Dryers */}
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-yeseva text-gray-700">D</span>
+          <div className="flex items-center">
+            {dryers.map(machine => (
+              <div key={machine.id} className="ml-2">
+                {machine.status === "available" && (
+                  <span className="status-dot bg-laundry-available"></span>
+                )}
+                
+                {machine.status === "done" && machine.timeRemaining && (
+                  <span className="text-sm text-laundry-soon font-medium">
+                    {machine.timeRemaining}m
+                  </span>
+                )}
+                
+                {machine.status === "running" && (
+                  <span className="status-dot bg-laundry-running"></span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
