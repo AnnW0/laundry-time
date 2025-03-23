@@ -76,8 +76,8 @@
     @apply text-foreground min-h-screen overflow-x-hidden;
     font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "SF Pro", "SF Pro Text", "Helvetica Neue", sans-serif;
     background-size: 400% 400%;
-    background: linear-gradient(-45deg, #D9EAFF, #E6F0FF, #D8E9FF, #E8F2FF, #F1F7FF, #E2EDFF);
-    animation: gradient 25s ease infinite;
+    background: linear-gradient(-45deg, #E8F2FF, #E6F0FF, #F1F7FF, #E2EDFF, #F5FAFF, #F3F8FF);
+    animation: gradient 45s ease infinite;
   }
 
   html {
@@ -107,19 +107,19 @@
   }
 
   .status-text {
-    @apply font-semibold text-sm;
+    @apply font-semibold text-sm md:text-lg;
   }
 
   .machine-card {
-    @apply bg-white/85 backdrop-blur-lg rounded-[1.75rem] p-6 transition-all duration-300 ease-out animate-fade-in;
+    @apply bg-white/85 backdrop-blur-lg rounded-[2rem] p-7 transition-all duration-300 ease-out animate-fade-in;
   }
 
   .machine-card-expanded {
-    @apply bg-white/85 backdrop-blur-lg rounded-[2rem] p-6 transition-all duration-300 ease-out;
+    @apply bg-white/85 backdrop-blur-lg rounded-[2.5rem] p-8 transition-all duration-300 ease-out;
   }
   
   .main-card {
-    @apply bg-white/85 backdrop-blur-lg rounded-[2.25rem] p-7 mb-5 transition-all duration-300 ease-out animate-fade-in;
+    @apply bg-white/85 backdrop-blur-lg rounded-[2.5rem] p-8 mb-6 transition-all duration-300 ease-out animate-fade-in;
   }
   
   .moon-gradient {
@@ -143,5 +143,25 @@
   
   .dark .toast-notification {
     @apply bg-black/75 backdrop-blur-lg text-white;
+  }
+}
+
+/* Dark Mode Styles */
+.dark body {
+  background: linear-gradient(-45deg, #17202A, #1C2833, #212F3D, #283747);
+  animation: gradient 45s ease infinite;
+}
+
+.dark .status-text {
+  @apply text-white;
+}
+
+.dark h2, .dark h3, .dark span:not(.status-dot) {
+  @apply text-white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
   }
 }

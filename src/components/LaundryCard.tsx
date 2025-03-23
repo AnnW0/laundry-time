@@ -1,8 +1,9 @@
 
 import { Hall, Machine } from "@/types";
 import { cn } from "@/lib/utils";
-import { Star, Wind, Waves } from "lucide-react";
+import { Star, Wind, Waves, Moon } from "lucide-react";
 import { ProgressBar } from "./ProgressBar";
+import { useTime } from "@/hooks/useTime";
 
 interface MachineStatusProps {
   machine: Machine;
@@ -21,21 +22,6 @@ function MachineStatus({ machine }: MachineStatusProps) {
         return "text-gray-400";
       default:
         return "text-gray-500";
-    }
-  };
-
-  const getStatusDot = () => {
-    switch (machine.status) {
-      case "available":
-        return <span className="status-dot bg-laundry-available"></span>;
-      case "done":
-        return <span className="status-dot bg-laundry-soon"></span>;
-      case "running":
-        return <span className="status-dot bg-laundry-running"></span>;
-      case "offline":
-        return <span className="status-dot bg-gray-400"></span>;
-      default:
-        return <span className="status-dot bg-gray-300"></span>;
     }
   };
 
@@ -58,10 +44,9 @@ function MachineStatus({ machine }: MachineStatusProps) {
 
   return (
     <div className="flex items-center justify-end">
-      <span className={cn("status-text", getStatusColor())}>
+      <span className={cn("status-text font-semibold text-lg", getStatusColor())}>
         {getStatusText()}
       </span>
-      {getStatusDot()}
     </div>
   );
 }
@@ -72,8 +57,10 @@ function formatHallName(name: string) {
   if (match) {
     return (
       <>
-        <span className="text-black">{match[1]}-</span>
-        <span className="text-lilac">{match[2]}</span>
+        <span className="text-black font-bold">{match[1]}</span>
+        <span className="ml-3 bg-laundry-blue text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+          {match[2]}
+        </span>
       </>
     );
   }
@@ -86,6 +73,8 @@ interface MainCardProps {
 }
 
 export function MainCard({ hall, onToggleStar }: MainCardProps) {
+  const { isCurfew, isApproachingCurfew } = useTime();
+  
   const machines = hall.machines.sort((a, b) => 
     a.type === "washer" ? -1 : 1
   );
@@ -93,7 +82,18 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
   return (
     <div className="main-card w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-black">Hall {formatHallName(hall.name)}</h2>
+        <div className="flex items-center">
+          <h2 className="text-2xl font-bold text-black mr-3">Hall {formatHallName(hall.name)}</h2>
+          {(isApproachingCurfew || isCurfew) && (
+            <Moon 
+              className={cn(
+                "moon-gradient",
+                isCurfew ? "fill-current" : ""
+              )} 
+              size={24} 
+            />
+          )}
+        </div>
         <button 
           onClick={() => onToggleStar(hall.id)}
           className="focus:outline-none transition-transform active:scale-90 duration-200"
@@ -110,30 +110,45 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
         </button>
       </div>
       
-      <div className="space-y-8">
-        {machines.map(machine => (
-          <div key={machine.id} className="space-y-3">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center">
-                {machine.type === "washer" ? (
-                  <Waves size={20} className="mr-2 text-laundry-blue" />
-                ) : (
-                  <Wind size={20} className="mr-2 text-laundry-blue" />
-                )}
-                <h3 className="text-xl font-semibold text-black">{machine.type === "washer" ? "Washer" : "Dryer"}</h3>
+      <div className="space-y-6">
+        {machines.map(machine => {
+          const bgColor = machine.status === "available" 
+            ? "bg-[#F2FCE2]/80" 
+            : machine.status === "done" 
+              ? "bg-[#FEF7CD]/80"
+              : machine.status === "running"
+                ? "bg-[#FFDEE2]/80"
+                : "bg-gray-100/80";
+          
+          return (
+            <div key={machine.id} className={cn("rounded-[2rem] p-6", bgColor)}>
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center">
+                  <div className="bg-white/80 rounded-full w-10 h-10 flex items-center justify-center mr-4">
+                    {machine.type === "washer" ? (
+                      <Waves size={22} className="text-laundry-blue" />
+                    ) : (
+                      <Wind size={22} className="text-laundry-blue" />
+                    )}
+                  </div>
+                  <h3 className="text-xl font-semibold text-black">
+                    {machine.type === "washer" ? "Washer" : "Dryer"}
+                  </h3>
+                </div>
+                <MachineStatus machine={machine} />
               </div>
-              <MachineStatus machine={machine} />
+              
+              {machine.status === "done" && machine.timeRemainingSeconds !== undefined && (
+                <ProgressBar 
+                  value={15 * 60 - (machine.timeRemainingSeconds || 0)}
+                  max={15 * 60}
+                  color="bg-laundry-soon"
+                  className="mt-2"
+                />
+              )}
             </div>
-            
-            {machine.status === "done" && machine.timeRemaining && machine.timeRemainingSeconds && (
-              <ProgressBar 
-                value={15 * 60 - (machine.timeRemainingSeconds || 0)}
-                max={15 * 60}
-                color="bg-laundry-soon"
-              />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -152,8 +167,10 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
 
   return (
     <div className="machine-card w-full" onClick={onSelect}>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-black">Hall {formatHallName(hall.name)}</h3>
+      <div className="flex justify-between items-center mb-5">
+        <div className="flex items-center">
+          <h3 className="text-lg font-bold text-black mr-2">Hall {formatHallName(hall.name)}</h3>
+        </div>
         <button 
           onClick={(e) => {
             e.stopPropagation();
@@ -174,67 +191,83 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
       </div>
       
       <div className="flex flex-col space-y-4">
-        {/* Washers */}
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <Waves size={16} className="mr-2 text-laundry-blue" />
-            <span className="text-lg font-medium text-black">W</span>
-          </div>
-          <div className="flex items-center">
-            {washers.map(machine => (
-              <div key={machine.id} className="ml-2">
-                {machine.status === "available" && (
-                  <span className="status-dot bg-laundry-available"></span>
-                )}
-                
-                {machine.status === "done" && machine.timeRemaining && (
-                  <span className="text-sm text-laundry-soon font-medium">
-                    {machine.timeRemaining}m
-                  </span>
-                )}
-                
-                {machine.status === "running" && (
-                  <span className="status-dot bg-laundry-running"></span>
-                )}
-                
-                {machine.status === "offline" && (
-                  <span className="status-dot bg-gray-400"></span>
-                )}
+        {washers.map(machine => {
+          const bgColor = machine.status === "available" 
+            ? "bg-[#F2FCE2]/80" 
+            : machine.status === "done" 
+              ? "bg-[#FEF7CD]/80"
+              : machine.status === "running"
+                ? "bg-[#FFDEE2]/80"
+                : "bg-gray-100/80";
+          
+          return (
+            <div key={machine.id} className={cn("rounded-[1.5rem] px-5 py-3 flex justify-between items-center", bgColor)}>
+              <div className="flex items-center">
+                <div className="bg-white/80 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                  <Waves size={18} className="text-laundry-blue" />
+                </div>
+                <span className="font-medium text-black">Washer</span>
               </div>
-            ))}
-          </div>
-        </div>
+              
+              {machine.status === "available" && (
+                <span className="status-dot bg-laundry-available"></span>
+              )}
+              
+              {machine.status === "done" && machine.timeRemaining && (
+                <span className="text-sm text-laundry-soon font-medium">
+                  {machine.timeRemaining}m
+                </span>
+              )}
+              
+              {machine.status === "running" && (
+                <span className="status-dot bg-laundry-running"></span>
+              )}
+              
+              {machine.status === "offline" && (
+                <span className="status-dot bg-gray-400"></span>
+              )}
+            </div>
+          );
+        })}
         
-        {/* Dryers */}
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <Wind size={16} className="mr-2 text-laundry-blue" />
-            <span className="text-lg font-medium text-black">D</span>
-          </div>
-          <div className="flex items-center">
-            {dryers.map(machine => (
-              <div key={machine.id} className="ml-2">
-                {machine.status === "available" && (
-                  <span className="status-dot bg-laundry-available"></span>
-                )}
-                
-                {machine.status === "done" && machine.timeRemaining && (
-                  <span className="text-sm text-laundry-soon font-medium">
-                    {machine.timeRemaining}m
-                  </span>
-                )}
-                
-                {machine.status === "running" && (
-                  <span className="status-dot bg-laundry-running"></span>
-                )}
-                
-                {machine.status === "offline" && (
-                  <span className="status-dot bg-gray-400"></span>
-                )}
+        {dryers.map(machine => {
+          const bgColor = machine.status === "available" 
+            ? "bg-[#F2FCE2]/80" 
+            : machine.status === "done" 
+              ? "bg-[#FEF7CD]/80"
+              : machine.status === "running"
+                ? "bg-[#FFDEE2]/80"
+                : "bg-gray-100/80";
+          
+          return (
+            <div key={machine.id} className={cn("rounded-[1.5rem] px-5 py-3 flex justify-between items-center", bgColor)}>
+              <div className="flex items-center">
+                <div className="bg-white/80 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                  <Wind size={18} className="text-laundry-blue" />
+                </div>
+                <span className="font-medium text-black">Dryer</span>
               </div>
-            ))}
-          </div>
-        </div>
+              
+              {machine.status === "available" && (
+                <span className="status-dot bg-laundry-available"></span>
+              )}
+              
+              {machine.status === "done" && machine.timeRemaining && (
+                <span className="text-sm text-laundry-soon font-medium">
+                  {machine.timeRemaining}m
+                </span>
+              )}
+              
+              {machine.status === "running" && (
+                <span className="status-dot bg-laundry-running"></span>
+              )}
+              
+              {machine.status === "offline" && (
+                <span className="status-dot bg-gray-400"></span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

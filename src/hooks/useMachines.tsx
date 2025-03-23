@@ -71,12 +71,14 @@ export function useMachines() {
             title: "Notifications enabled",
             description: "You'll be notified when machines become available",
             duration: 2000,
+            className: "toast-notification"
           });
         } else {
           toast({
             title: "Notifications not enabled",
             description: "You won't receive alerts when machines become available",
             duration: 2000,
+            className: "toast-notification"
           });
         }
       } catch (error) {
@@ -90,6 +92,7 @@ export function useMachines() {
           ? `Removed ${hall.name} from favorites` 
           : `Added ${hall.name} to favorites`,
         duration: 2000,
+        className: "toast-notification"
       });
     }
   };
@@ -111,6 +114,7 @@ export function useMachines() {
           "dryer availability"
         }`,
         duration: 2000,
+        className: "toast-notification"
       });
       
       return nextOption;
@@ -157,6 +161,7 @@ export function useMachines() {
     toast({
       title: "Updated machine statuses",
       duration: 2000,
+      className: "toast-notification"
     });
   };
 
