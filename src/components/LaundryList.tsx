@@ -25,6 +25,16 @@ export function LaundryList({
   // Get all halls except the main view hall
   const compactHalls = halls.filter(hall => hall.id !== mainViewHall.id);
 
+  // Get sort option display text
+  const getSortText = () => {
+    switch(sortOption) {
+      case "available-first": return "All";
+      case "washer-first": return "Washers";
+      case "dryer-first": return "Dryers";
+      default: return "Name";
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 pb-20">
       {/* Controls */}
@@ -34,7 +44,7 @@ export function LaundryList({
           className="flex items-center space-x-2 bg-white/70 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm active:scale-95 transition-all duration-200"
         >
           <AlignLeft size={20} />
-          <span>Sort</span>
+          <span>Sort: {getSortText()}</span>
         </button>
         
         <button

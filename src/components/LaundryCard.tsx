@@ -87,7 +87,7 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
   return (
     <div className="main-card w-full">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-yeseva text-gray-800">Hall {formatHallName(hall.name)}</h2>
+        <h2 className="text-2xl text-gray-800">Hall {formatHallName(hall.name)}</h2>
         <button 
           onClick={() => onToggleStar(hall.id)}
           className="focus:outline-none transition-transform active:scale-90 duration-200"
@@ -108,14 +108,14 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
         {machines.map(machine => (
           <div key={machine.id} className="space-y-2">
             <div className="flex justify-between items-center">
-              <h3 className="text-xl font-yeseva text-gray-700">{machine.type === "washer" ? "Washer" : "Dryer"}</h3>
+              <h3 className="text-xl text-gray-700">{machine.type === "washer" ? "Washer" : "Dryer"}</h3>
               <MachineStatus machine={machine} />
             </div>
             
-            {machine.status === "done" && machine.timeRemaining && (
+            {machine.status === "done" && machine.timeRemaining && machine.timeRemainingSeconds && (
               <ProgressBar 
-                value={15 - (machine.timeRemaining || 0)}
-                max={15}
+                value={15 * 60 - (machine.timeRemainingSeconds || 0)}
+                max={15 * 60}
                 color="bg-laundry-soon"
               />
             )}
@@ -140,7 +140,7 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
   return (
     <div className="machine-card w-full" onClick={onSelect}>
       <div className="flex justify-between items-center mb-3">
-        <h3 className="text-xl font-yeseva text-gray-800">Hall {formatHallName(hall.name)}</h3>
+        <h3 className="text-xl text-gray-800">Hall {formatHallName(hall.name)}</h3>
         <button 
           onClick={(e) => {
             e.stopPropagation();
@@ -160,10 +160,10 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
         </button>
       </div>
       
-      <div className="flex flex-col space-y-1">
+      <div className="flex flex-col space-y-3">
         {/* Washers */}
         <div className="flex justify-between items-center">
-          <span className="text-lg font-yeseva text-gray-700">W</span>
+          <span className="text-lg text-gray-700">W</span>
           <div className="flex items-center">
             {washers.map(machine => (
               <div key={machine.id} className="ml-2">
@@ -187,7 +187,7 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
         
         {/* Dryers */}
         <div className="flex justify-between items-center">
-          <span className="text-lg font-yeseva text-gray-700">D</span>
+          <span className="text-lg text-gray-700">D</span>
           <div className="flex items-center">
             {dryers.map(machine => (
               <div key={machine.id} className="ml-2">

@@ -1,5 +1,6 @@
 
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 interface ProgressBarProps {
   value: number;
@@ -14,12 +15,18 @@ export function ProgressBar({
   className,
   color = "bg-laundry-soon"
 }: ProgressBarProps) {
-  const percent = Math.min(Math.max((value / max) * 100, 0), 100);
+  const [percent, setPercent] = useState(Math.min(Math.max((value / max) * 100, 0), 100));
+  
+  // Update the percentage smoothly
+  useEffect(() => {
+    const targetPercent = Math.min(Math.max((value / max) * 100, 0), 100);
+    setPercent(targetPercent);
+  }, [value, max]);
   
   return (
     <div className={cn("w-full h-2 bg-gray-100/50 rounded-full overflow-hidden", className)}>
       <div 
-        className={cn("h-full rounded-full transition-all duration-1000", color)}
+        className={cn("h-full rounded-full transition-all duration-300", color)}
         style={{ 
           width: `${percent}%`,
         }}

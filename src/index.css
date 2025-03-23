@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,7 +33,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 1rem;
+    --radius: 1.5rem;
   }
 }
 
@@ -45,9 +43,10 @@
   }
 
   body {
-    @apply text-foreground font-yeseva min-h-screen overflow-x-hidden;
+    @apply text-foreground min-h-screen overflow-x-hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", sans-serif;
     background-size: 400% 400%;
-    background: linear-gradient(-45deg, #FF719A, #D580FF, #66B9FA, #33CCF1);
+    background: linear-gradient(-45deg, #B5D5FF, #D9EAFF, #D2E6FF, #E6F0FF);
     animation: gradient 15s ease infinite;
   }
 
@@ -69,10 +68,6 @@
 }
 
 @layer utilities {
-  .font-yeseva {
-    font-family: 'Yeseva One', cursive;
-  }
-  
   .ellipsis {
     @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
@@ -90,11 +85,11 @@
   }
 
   .machine-card {
-    @apply bg-white/70 backdrop-blur-sm rounded-2xl p-4 transition-all duration-300 ease-out animate-fade-in;
+    @apply bg-white/70 backdrop-blur-sm rounded-3xl p-4 transition-all duration-300 ease-out animate-fade-in;
   }
 
   .machine-card-expanded {
-    @apply bg-white/70 backdrop-blur-sm rounded-2xl p-4 transition-all duration-300 ease-out;
+    @apply bg-white/70 backdrop-blur-sm rounded-3xl p-4 transition-all duration-300 ease-out;
   }
   
   .main-card {
@@ -110,6 +105,7 @@
   }
   
   .hall-number {
-    @apply text-gray-500;
+    @apply text-lilac;
   }
 }
+
