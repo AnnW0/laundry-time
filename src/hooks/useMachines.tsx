@@ -1,4 +1,3 @@
-
 import { mockHalls } from "@/lib/data";
 import { Hall, Machine, SortOption } from "@/types";
 import { useToast } from "@/hooks/use-toast";
@@ -21,12 +20,8 @@ export function useMachines() {
     if (!a.isStarred && b.isStarred) return 1;
 
     if (sortOption === "available-first") {
-      // Then by availability
-      const aAvailableCount = a.machines.filter(m => m.status === "available").length;
-      const bAvailableCount = b.machines.filter(m => m.status === "available").length;
-      if (aAvailableCount !== bAvailableCount) {
-        return bAvailableCount - aAvailableCount;
-      }
+      // Name sorting (default)
+      return a.name.localeCompare(b.name);
     } else if (sortOption === "washer-first") {
       // By washer availability
       const aAvailableWashers = a.machines.filter(m => m.status === "available" && m.type === "washer").length;
@@ -97,10 +92,10 @@ export function useMachines() {
     }
   };
 
-  // Cycle through sort options
+  // Cycle through sort options (only 3 options now)
   const toggleSortOption = () => {
     setSortOption(prev => {
-      const options: SortOption[] = ["default", "available-first", "washer-first", "dryer-first"];
+      const options: SortOption[] = ["available-first", "washer-first", "dryer-first"];
       const currentIndex = options.indexOf(prev);
       const nextIndex = (currentIndex + 1) % options.length;
       
@@ -108,8 +103,7 @@ export function useMachines() {
       
       toast({
         title: `Sorted by ${
-          nextOption === "default" ? "name" : 
-          nextOption === "available-first" ? "availability" : 
+          nextOption === "available-first" ? "name" : 
           nextOption === "washer-first" ? "washer availability" : 
           "dryer availability"
         }`,

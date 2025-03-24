@@ -10,7 +10,7 @@ export function Header() {
     <div className="relative flex flex-col items-center justify-center pt-10 pb-6">
       <div className={cn(
         "absolute top-10 left-10 transition-all duration-500",
-        (isCurfew || isApproachingCurfew) ? "moon-gradient" : "text-primary opacity-70"
+        "moon-gradient rounded-full p-1.5"
       )}>
         <Moon 
           className={cn(

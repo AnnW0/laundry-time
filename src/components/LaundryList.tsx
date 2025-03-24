@@ -28,7 +28,7 @@ export function LaundryList({
   // Get sort option display text
   const getSortText = () => {
     switch(sortOption) {
-      case "available-first": return "All";
+      case "available-first": return "Name";
       case "washer-first": return "Washers";
       case "dryer-first": return "Dryers";
       default: return "Name";

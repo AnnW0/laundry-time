@@ -55,7 +55,7 @@ export default {
         },
         // Custom colors for the laundry app
         laundry: {
-          available: "#8AE68A", // Green
+          available: "#7DD77D", // Darker green
           soon: "#FFB347", // Orange
           running: "#FF719A", // Pink
           blue: {

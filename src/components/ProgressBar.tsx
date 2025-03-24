@@ -24,7 +24,7 @@ export function ProgressBar({
   }, [value, max]);
   
   return (
-    <div className={cn("w-full h-4 bg-gray-100/30 rounded-full overflow-hidden transition-all", className)}>
+    <div className={cn("w-full h-3 bg-gray-100/30 rounded-full overflow-hidden transition-all", className)}>
       <div 
         className={cn("h-full rounded-full transition-all duration-300", color)}
         style={{ 

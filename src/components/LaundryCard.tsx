@@ -57,8 +57,8 @@ function formatHallName(name: string) {
   if (match) {
     return (
       <>
-        <span className="text-black font-bold">{match[1]}</span>
-        <span className="ml-3 bg-laundry-blue text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+        <span className="text-black font-bold">{match[1]}-</span>
+        <span className="ml-1 bg-laundry-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">
           {match[2]}
         </span>
       </>
@@ -113,15 +113,15 @@ export function MainCard({ hall, onToggleStar }: MainCardProps) {
       <div className="space-y-6">
         {machines.map(machine => {
           const bgColor = machine.status === "available" 
-            ? "bg-[#F2FCE2]/80" 
+            ? "bg-[#E5F9D4]/90" 
             : machine.status === "done" 
-              ? "bg-[#FEF7CD]/80"
+              ? "bg-[#FEF7CD]/90"
               : machine.status === "running"
-                ? "bg-[#FFDEE2]/80"
-                : "bg-gray-100/80";
+                ? "bg-[#FFDEE2]/90"
+                : "bg-gray-100/90";
           
           return (
-            <div key={machine.id} className={cn("rounded-[2rem] p-6", bgColor)}>
+            <div key={machine.id} className={cn("rounded-[2rem] px-6 py-5", bgColor)}>
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center">
                   <div className="bg-white/80 rounded-full w-10 h-10 flex items-center justify-center mr-4">
@@ -193,12 +193,12 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
       <div className="flex flex-col space-y-4">
         {washers.map(machine => {
           const bgColor = machine.status === "available" 
-            ? "bg-[#F2FCE2]/80" 
+            ? "bg-[#E5F9D4]/90" 
             : machine.status === "done" 
-              ? "bg-[#FEF7CD]/80"
+              ? "bg-[#FEF7CD]/90"
               : machine.status === "running"
-                ? "bg-[#FFDEE2]/80"
-                : "bg-gray-100/80";
+                ? "bg-[#FFDEE2]/90"
+                : "bg-gray-100/90";
           
           return (
             <div key={machine.id} className={cn("rounded-[1.5rem] px-5 py-3 flex justify-between items-center", bgColor)}>
@@ -232,12 +232,12 @@ export function CompactCard({ hall, onToggleStar, onSelect }: CompactCardProps) 
         
         {dryers.map(machine => {
           const bgColor = machine.status === "available" 
-            ? "bg-[#F2FCE2]/80" 
+            ? "bg-[#E5F9D4]/90" 
             : machine.status === "done" 
-              ? "bg-[#FEF7CD]/80"
+              ? "bg-[#FEF7CD]/90"
               : machine.status === "running"
-                ? "bg-[#FFDEE2]/80"
-                : "bg-gray-100/80";
+                ? "bg-[#FFDEE2]/90"
+                : "bg-gray-100/90";
           
           return (
             <div key={machine.id} className={cn("rounded-[1.5rem] px-5 py-3 flex justify-between items-center", bgColor)}>
